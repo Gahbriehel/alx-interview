@@ -1,7 +1,16 @@
-#!/usr/bin/node
+#!/usr/bin/env node
 
 const request = require('request');
-const baseUrl = 'https://swapi-api.alx-tools.com/api/films/3/';
+
+// Get Movie ID from the command line argument
+const movieId = process.argv[2];
+if (!movieId) {
+  console.error('Please provide a Movie ID.');
+  process.exit(1);
+}
+
+// Base URL for the Star Wars API, with the specified Movie ID
+const baseUrl = `https://swapi-api.alx-tools.com/api/films/${movieId}/`;
 
 request(baseUrl, function (error, res, body) {
   if (!error && res.statusCode === 200) {
@@ -41,7 +50,6 @@ request(baseUrl, function (error, res, body) {
 
           // Once all requests are complete, log the results in order
           if (completedRequests === characterIds.length) {
-            console.log('Character Names in Order:');
             characterNames.forEach((name) => console.log(name));
           }
         });
