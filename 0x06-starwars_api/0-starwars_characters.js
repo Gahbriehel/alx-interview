@@ -9,37 +9,41 @@ request(baseUrl, function (error, res, body) {
         characterUrl.split("/").filter(Boolean).pop()
       );
 
-      const characterNames = [];
+      // Array to hold character names in the correct order
+      const characterNames = new Array(characterIds.length);
+      let completedRequests = 0;
 
-      const fetchCharacterName = (index) => {
-        if (index >= characterIds.length) {
-          characterNames.forEach((name) => console.log(name));
-          return;
-        }
-
-        const characterUrl = `https://swapi-api.alx-tools.com/api/people/${characterIds[index]}/`;
+      // Fetch each character name and store in the correct position
+      characterIds.forEach((characterId, index) => {
+        const characterUrl = `https://swapi-api.alx-tools.com/api/people/${characterId}/`;
         request(characterUrl, (err, response, characterBody) => {
           if (!err && response.statusCode === 200) {
             try {
               const characterData = JSON.parse(characterBody);
               characterNames[index] = characterData.name;
-              fetchCharacterName(index + 1);
             } catch (parseErr) {
               console.log(
-                `Failed to parse character data for ID: ${characterIds[index]}`,
+                `Failed to parse character data for ID: ${characterId}`,
                 parseErr
               );
             }
           } else {
             console.log(
-              `Error fetching character with ID ${characterIds[index]}:`,
+              `Error fetching character with ID ${characterId}:`,
               err
             );
           }
-        });
-      };
 
-      fetchCharacterName(0);
+          // Increment the completed requests counter
+          completedRequests += 1;
+
+          // Once all requests are complete, log the results in order
+          if (completedRequests === characterIds.length) {
+            console.log("Character Names in Order:");
+            characterNames.forEach((name) => console.log(name));
+          }
+        });
+      });
     } catch (err) {
       console.log("Failed to parse JSON:", err);
     }
