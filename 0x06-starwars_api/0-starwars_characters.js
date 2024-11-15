@@ -1,14 +1,14 @@
 #!/usr/bin/node
 
-const request = require("request");
-const baseUrl = "https://swapi-api.alx-tools.com/api/films/3/";
+const request = require('request');
+const baseUrl = 'https://swapi-api.alx-tools.com/api/films/3/';
 
 request(baseUrl, function (error, res, body) {
   if (!error && res.statusCode === 200) {
     try {
       const data = JSON.parse(body);
       const characterIds = data.characters.map((characterUrl) =>
-        characterUrl.split("/").filter(Boolean).pop()
+        characterUrl.split('/').filter(Boolean).pop()
       );
 
       // Array to hold character names in the correct order
@@ -41,15 +41,15 @@ request(baseUrl, function (error, res, body) {
 
           // Once all requests are complete, log the results in order
           if (completedRequests === characterIds.length) {
-            console.log("Character Names in Order:");
+            console.log('Character Names in Order:');
             characterNames.forEach((name) => console.log(name));
           }
         });
       });
     } catch (err) {
-      console.log("Failed to parse JSON:", err);
+      console.log('Failed to parse JSON:', err);
     }
   } else {
-    console.log("Error:", error);
+    console.log('Error:', error);
   }
 });
