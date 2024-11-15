@@ -1,11 +1,11 @@
 #!/usr/bin/node
 
-const request = require("request");
+const request = require('request');
 
 // Get Movie ID from the command line argument
 const movieId = process.argv[2];
 if (!movieId) {
-  console.error("Please provide a Movie ID.");
+  console.error('Please provide a Movie ID.');
   process.exit(1);
 }
 
@@ -17,7 +17,7 @@ request(baseUrl, function (error, res, body) {
     try {
       const data = JSON.parse(body);
       const characterIds = data.characters.map((characterUrl) =>
-        characterUrl.split("/").filter(Boolean).pop()
+        characterUrl.split('/').filter(Boolean).pop()
       );
 
       // Array to hold character names in the correct order
@@ -55,9 +55,9 @@ request(baseUrl, function (error, res, body) {
         });
       });
     } catch (err) {
-      console.log("Failed to parse JSON:", err);
+      console.log('Failed to parse JSON:', err);
     }
   } else {
-    console.log("Error:", error);
+    console.log('Error:', error);
   }
 });
